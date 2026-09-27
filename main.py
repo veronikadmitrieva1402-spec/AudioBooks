@@ -1,88 +1,160 @@
-import math
+"""Точка входа: меню сервиса учёта коллекции аудиокниг."""
 
-print("Сервис учета коллекции аудиокниг")
-print("-" * 45)
-print("Добавление новой аудиокниги")
-
-
-def check_speed(speed):
-    if speed <= 0:
-        return False, "Ошибка. Скорость некорректна!"
-    if speed > 3:
-        return False, "Ошибка. Слишком высокая скорость!"
-    return True, "Скорость корректна."
-
-
-def format_duration(total_minutes):
-    hours = int(total_minutes // 60)
-    minutes = int(round(total_minutes % 60))
-    if hours == 0:
-        return f"{minutes} мин"
-    return f"{hours} ч {minutes} мин"
+from audiobooks import (
+    add_audiobook,
+    check_speed,
+    count_days,
+    delete_audiobook,
+    filter_by_genre,
+    find_audiobooks,
+    format_duration,
+    get_statistics,
+    sort_audiobooks,
+)
+from storage import load_audiobooks, save_audiobooks
+from utils import input_float, input_int, input_str
 
 
-def count_days(total_minutes, per_day_hours):
-    if per_day_hours <= 0 or total_minutes <= 0:
-        return -1
-    minutes_per_day = per_day_hours * 60
-    return math.ceil(total_minutes / minutes_per_day)
+def show_audiobooks(books: list[dict]) -> None:
+    """Вывести список книг в виде таблицы."""
+    if not books:
+        print("Коллекция пуста.")
+        return
+    print("-" * 60)
+    print(f"{'ID':<4}{'Название':<25}{'Автор':<20}{'Жанр':<15}")
+    print("-" * 60)
+    for b in books:
+        duration = format_duration(b["hours"] * 60 + b["minutes"])
+        print(f"{b['id']:<4}{b['title'][:23]:<25}{b['author'][:18]:<20}"
+              f"{b['genre'][:13]:<15}")
+        print(f"    {duration}, чтец: {b['narrator']}")
 
 
-title = input("Название книги: ").strip()
-author = input("Автор: ").strip()
-narrator = input("Чтец: ").strip()
-genre = input("Жанр: ").strip()
+def cmd_add(books: list[dict]) -> None:
+    """Обработать команду добавления книги."""
+    title = input_str("Название: ")
+    author = input_str("Автор: ")
+    narrator = input_str("Чтец: ")
+    genre = input_str("Жанр: ")
+    hours = input_int("Часы: ")
+    minutes = input_int("Минуты: ")
+    speed = input_float("Скорость прослушивания: ", min_value=0.0)
 
-hours_str = input("Длительность (часы): ").strip()
-minutes_str = input("Длительность (минуты): ").strip()
-speed_str = input("Скорость прослушивания: ").strip()
-per_day_str = input("Сколько часов в день слушаете? ").strip()
+    ok, msg = check_speed(speed)
+    print(msg)
+    if not ok:
+        print("Запись не добавлена.")
+        return
 
-hours = int(hours_str)
-minutes = int(minutes_str)
-speed = float(speed_str)
-per_day = float(per_day_str)
+    book = add_audiobook(books, title, author, narrator, genre,
+                         hours, minutes, speed)
+    save_audiobooks(books)
+    print(f"Книга «{book['title']}» добавлена (ID {book['id']}).")
 
-error = False
 
-if title == "" or author == "":
-    print("Ошибка. Пустая строка!")
-    error = True
+def cmd_find(books: list[dict]) -> None:
+    """Найти книги по подстроке."""
+    query = input_str("Что искать: ")
+    found = find_audiobooks(books, query)
+    show_audiobooks(found)
 
-if hours < 0 or minutes < 0:
-    print("Ошибка. Отрицательное значение!")
-    error = True
 
-if minutes >= 60:
-    hours = hours + minutes // 60
-    minutes = minutes % 60
-    print(f"Время приведено к виду {hours} ч {minutes} мин.")
+def cmd_filter(books: list[dict]) -> None:
+    """Фильтр по жанру."""
+    genre = input_str("Жанр: ")
+    found = filter_by_genre(books, genre)
+    show_audiobooks(found)
 
-ok, msg = check_speed(speed)
-print(msg)
-if not ok:
-    error = True
 
-if error:
-    print("\nЗапись не добавлена. Исправьте данные!")
-else:
-    total_minutes = hours * 60 + minutes
-    real_minutes = total_minutes / speed
+def cmd_sort(books: list[dict]) -> None:
+    """Показать книги, отсортированные по длительности."""
+    show_audiobooks(sort_audiobooks(books))
 
-    duration_text = format_duration(total_minutes)
-    real_time_text = format_duration(real_minutes)
 
-    days = count_days(real_minutes, per_day)
+def cmd_stats(books: list[dict]) -> None:
+    """Показать статистику коллекции."""
+    stats = get_statistics(books)
+    print(f"Всего книг: {stats['count']}")
+    print(f"Общее время: {format_duration(stats['total_minutes'])}")
+    print(f"Средняя длительность: {format_duration(stats['avg_minutes'])}")
 
+
+def cmd_delete(books: list[dict]) -> None:
+    """Удалить книгу по ID."""
+    book_id = input_int("ID книги для удаления: ")
+    if delete_audiobook(books, book_id):
+        save_audiobooks(books)
+        print("Удалено.")
+    else:
+        print("Книга с таким ID не найдена.")
+
+
+def cmd_plan(books: list[dict]) -> None:
+    """Посчитать дни прослушивания для выбранной книги."""
+    book_id = input_int("ID книги: ")
+    per_day = input_float("Сколько часов в день слушаете: ", min_value=0.0)
+    for b in books:
+        if b["id"] == book_id:
+            total = b["hours"] * 60 + b["minutes"]
+            real = total / b["speed"]
+            days = count_days(real, per_day)
+            print(f"Реальное время: {format_duration(real)}")
+            print(f"При {per_day} ч/день: примерно {days} дн.")
+            return
+    print("Книга не найдена.")
+
+
+def print_menu() -> None:
+    """Вывести главное меню."""
     print()
-    print("Карточка аудиокниги")
-    print("-" * 45)
-    print(f"Название: {title}")
-    print(f"Автор: {author}")
-    print(f"Чтец: {narrator}")
-    print(f"Жанр: {genre}")
-    print(f"Длительность: {duration_text} ({total_minutes} мин)")
-    print(f"Скорость: x{speed}")
-    print(f"Время прослушивания: {real_time_text}")
-    print(f"При {per_day} ч в день: примерно {days} дн.")
-    print("Запись успешно добавлена")
+    print("=" * 45)
+    print("  СЕРВИС УЧЁТА КОЛЛЕКЦИИ АУДИОКНИГ")
+    print("=" * 45)
+    print("1. Показать все книги")
+    print("2. Добавить книгу")
+    print("3. Найти по названию")
+    print("4. Фильтр по жанру")
+    print("5. Сортировка по длительности")
+    print("6. Статистика")
+    print("7. Посчитать дни прослушивания")
+    print("8. Удалить книгу")
+    print("0. Выход")
+
+
+def main() -> None:
+    """Главный цикл меню."""
+    books = load_audiobooks()
+    print(f"Загружено книг: {len(books)}")
+
+    actions = {
+        "1": lambda: show_audiobooks(books),
+        "2": lambda: cmd_add(books),
+        "3": lambda: cmd_find(books),
+        "4": lambda: cmd_filter(books),
+        "5": lambda: cmd_sort(books),
+        "6": lambda: cmd_stats(books),
+        "7": lambda: cmd_plan(books),
+        "8": lambda: cmd_delete(books),
+    }
+
+    while True:
+        print_menu()
+        choice = input("Выберите действие: ").strip()
+
+        if choice == "0":
+            print("До встречи!")
+            break
+
+        action = actions.get(choice)
+        if action is None:
+            print("Неизвестная команда.")
+            continue
+
+        try:
+            action()
+        except Exception as e:
+            print(f"Ошибка выполнения: {e}")
+
+
+if __name__ == "__main__":
+    main()
