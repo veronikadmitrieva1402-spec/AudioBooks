@@ -12,7 +12,6 @@ def input_str(prompt: str) -> str:
 
 
 def input_int(prompt: str, allow_negative: bool = False) -> int:
-    """Запросить целое число. Повторять при ошибке ввода."""
     while True:
         try:
             value = int(input(prompt).strip())
@@ -35,3 +34,4 @@ def input_float(prompt: str, min_value: float = 0.0) -> float:
             return value
         except ValueError:
             print("Ошибка: введите число (например, 1.5).")
+            
