@@ -62,4 +62,3 @@ def save_users(
                       f, ensure_ascii=False, indent=2)
     except OSError as e:
         print(f"Ошибка сохранения: {e}")
-        

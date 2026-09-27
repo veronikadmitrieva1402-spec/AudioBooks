@@ -114,7 +114,7 @@ class Audiobook:
             speed=data.get("speed", 1.0),
             is_finished=data.get("is_finished", False),
         )
-    
+
 
 def add_audiobook(
     books: list[Audiobook],

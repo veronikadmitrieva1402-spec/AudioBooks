@@ -34,4 +34,3 @@ def input_float(prompt: str, min_value: float = 0.0) -> float:
             return value
         except ValueError:
             print("Ошибка: введите число (например, 1.5).")
-            

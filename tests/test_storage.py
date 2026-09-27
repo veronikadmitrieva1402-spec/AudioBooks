@@ -47,4 +47,3 @@ def test_load_corrupted_json_returns_empty():
         with open(filename, "w", encoding="utf-8") as f:
             f.write("{ это не json")
         assert load_audiobooks(filename) == []
-        
