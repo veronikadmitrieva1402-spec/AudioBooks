@@ -46,7 +46,8 @@
 6. Адаптивный дизайн
 
 ## Команды для работы 
-.\.venv\Scripts\Activate.ps1
+.\.venv\Scripts\Activate.ps1 - venv 
+python manage.py runserver - запуск Django server 
 
 Заявку сделать, чтобы связать пользователя и аудиокнигу 
 
