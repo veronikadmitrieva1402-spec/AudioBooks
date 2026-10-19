@@ -1,0 +1,102 @@
+body {
+    background-color: #faf6ef;
+    color: #3b2b23;
+    font-family: 'Georgia', serif;
+    min-height: 100vh;
+}
+
+.navbar.bg-dark {
+    background-color: #5c1f1d !important;
+    border-bottom: 3px solid #d4a373;
+}
+
+.navbar-brand {
+    color: #f4d06f !important;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    color: #faf6ef !important;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: #f4d06f !important;
+}
+
+.app-logo {
+    width: 200px;
+    margin-bottom: 1rem;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+}
+
+.book-card {
+    background-color: #fff9f0;
+    border: 1px solid #e0d0c0;
+    border-left: 6px solid #c25a3a;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 8px;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(92, 31, 29, 0.15) !important;
+    border-left-color: #d4a373;
+}
+
+.book-card .card-title {
+    color: #5c1f1d;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #c25a3a !important;
+    border-color: #c25a3a !important;
+    color: #fff !important;
+}
+
+.btn-primary:hover {
+    background-color: #a34429 !important;
+    border-color: #a34429 !important;
+}
+
+.btn-outline-secondary {
+    color: #5c1f1d !important;
+    border-color: #5c1f1d !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #5c1f1d !important;
+    color: #faf6ef !important;
+}
+
+.badge.bg-secondary {
+    background-color: #d4a373 !important;
+    color: #3b2b23 !important;
+}
+
+.badge.bg-success {
+    background-color: #7a8b5e !important;
+    color: #fff !important;
+}
+
+.badge.bg-warning {
+    background-color: #d4a373 !important;
+    color: #3b2b23 !important;
+}
+
+.card {
+    background-color: #fff9f0;
+    border: 1px solid #e0d0c0;
+    border-radius: 10px;
+}
+
+.card-title {
+    color: #5c1f1d;
+}
+
+footer {
+    border-top: 2px solid #d4a373;
+    color: #6b5b4d !important;
+}

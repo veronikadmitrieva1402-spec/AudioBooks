@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if book %}{{ book.title }}{% else %}Книга не найдена{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if book %}
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h1 class="card-title">{{ book.title }}</h1>
+            <h5 class="card-subtitle mb-3 text-muted">{{ book.author }}</h5>
+            
+            <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item"><strong>Чтец:</strong> {{ book.narrator }}</li>
+                <li class="list-group-item"><strong>Жанр:</strong> {{ book.genre }}</li>
+                <li class="list-group-item">
+                    <strong>Длительность:</strong> 
+                    {% if book.is_finished %}
+                        <span class="badge bg-success">Прослушано</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">В процессе</span>
+                    {% endif %}
+                </li>
+            </ul>
+            <a href="{% url 'books:list' %}" class="btn btn-outline-secondary">← Назад к списку</a>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-danger">
+        <h1>Аудиокнига не найдена</h1>
+        <p>Книги с таким ID не существует.</p>
+        <a href="{% url 'books:list' %}" class="btn btn-outline-secondary mt-2">← К списку</a>
+    </div>
+{% endif %}
+{% endblock %}
