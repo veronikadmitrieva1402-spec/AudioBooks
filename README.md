@@ -48,6 +48,9 @@
 ## Команды для работы 
 .\.venv\Scripts\Activate.ps1 - venv 
 python manage.py runserver - запуск Django server 
+pytest -v - test
+python main.py - консольный запуск
+flake8 . - проверка
 
 Заявку сделать, чтобы связать пользователя и аудиокнигу 
 

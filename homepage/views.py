@@ -18,7 +18,7 @@ def page(title, content):
 <body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
-            <a class="navbar-brand" href="/">🎧 Аудиокниги</a>
+            <a class="navbar-brand" href="/">Аудиокниги</a>
             <div class="navbar-nav">
                 <a class="nav-link" href="/books/">Книги</a>
                 <a class="nav-link" href="/users/">Пользователи</a>

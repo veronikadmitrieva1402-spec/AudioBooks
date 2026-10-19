@@ -13,12 +13,18 @@ def book_list(request):
         for book in books:
             duration = Audiobook.format_duration(book.total_minutes)
             items += f"""
-            <li class="list-group-item d-flex justify-content-between align-items-center">
+            <li class="list-group-item d-flex justify-content-between">
                 <div>
-                    <strong>{book.title}</strong> — {book.author} 
-                    <br><small class="text-muted">Чтец: {book.narrator} | {duration}</small>
+                    <strong>{book.title}</strong> — {book.author}
+                    <br>
+                    <small class="text-muted">
+                        Чтец: {book.narrator} | {duration}
+                    </small>
                 </div>
-                <a href="/books/{book.id}/" class="btn btn-sm btn-outline-primary">Подробнее</a>
+                <a href="/books/{book.id}/"
+                    class="btn btn-sm btn-outline-primary">
+                    Подробнее
+                </a>
             </li>
             """
     content = f"""
@@ -38,12 +44,13 @@ def book_detail(request, book_id):
         <div class="alert alert-danger">
             <h1>Аудиокнига не найдена</h1>
         </div>
-        <a href="/books/" class="btn btn-outline-secondary">← К списку</a>
+        <a href="/books/" class="btn btn-outline-secondary">← Назад</a>
         """
         return HttpResponse(page("Не найдено", content), status=404)
 
     duration = Audiobook.format_duration(book.total_minutes)
     real_duration = Audiobook.format_duration(book.real_minutes)
+    status_text = "Прослушано" if book.is_finished else "В процессе"
     content = f"""
     <div class="card shadow-sm">
         <div class="card-body">
@@ -53,10 +60,13 @@ def book_detail(request, book_id):
                 <strong>Жанр:</strong> {book.genre}<br>
                 <strong>Чтец:</strong> {book.narrator}<br>
                 <strong>Длительность:</strong> {duration}<br>
-                <strong>При скорости x{book.speed}:</strong> {real_duration}<br>
-                <strong>Статус:</strong> {'✅ Прослушано' if book.is_finished else '📖 В процессе'}
+                <strong>При скорости x{book.speed}:</strong>
+                {real_duration}<br>
+                <strong>Статус:</strong> {status_text}
             </p>
-            <a href="/books/" class="btn btn-outline-secondary mt-3">← Назад к списку</a>
+            <a href="/books/" class="btn btn-outline-secondary mt-3">
+                ← Назад к списку
+            </a>
         </div>
     </div>
     """
