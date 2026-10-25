@@ -1,13 +1,68 @@
 [
   {
     "id": 1,
-    "title": "",
-    "author": "к",
-    "narrator": "й",
-    "genre": "к",
-    "hours": 7,
-    "minutes": 5,
-    "speed": 2.0,
+    "title": "Дюна",
+    "author": "Фрэнк Герберт",
+    "narrator": "Иван Иванов",
+    "genre": "Фантастика",
+    "hours": 10,
+    "minutes": 30,
+    "speed": 1.0,
     "is_finished": true
+  },
+  {
+    "id": 2,
+    "title": "1984",
+    "author": "Джордж Оруэлл",
+    "narrator": "Пётр Петров",
+    "genre": "Антиутопия",
+    "hours": 8,
+    "minutes": 0,
+    "speed": 1.5,
+    "is_finished": false
+  },
+  {
+    "id": 3,
+    "title": "Марсианин",
+    "author": "Энди Вейер",
+    "narrator": "Алексей Смирнов",
+    "genre": "Фантастика",
+    "hours": 11,
+    "minutes": 15,
+    "speed": 1.2,
+    "is_finished": true
+  },
+  {
+    "id": 4,
+    "title": "Убийство в «Восточном экспрессе»",
+    "author": "Агата Кристи",
+    "narrator": "Елена Иванова",
+    "genre": "Детектив",
+    "hours": 6,
+    "minutes": 45,
+    "speed": 1.0,
+    "is_finished": true
+  },
+  {
+    "id": 5,
+    "title": "Sapiens. Краткая история человечества",
+    "author": "Юваль Ной Харари",
+    "narrator": "Михаил Сидоров",
+    "genre": "Научпоп",
+    "hours": 15,
+    "minutes": 20,
+    "speed": 1.0,
+    "is_finished": false
+  },
+  {
+    "id": 6,
+    "title": "Гарри Поттер и философский камень",
+    "author": "Дж. К. Роулинг",
+    "narrator": "Александр Клюквин",
+    "genre": "Фэнтези",
+    "hours": 9,
+    "minutes": 10,
+    "speed": 1.0,
+    "is_finished": false
   }
 ]

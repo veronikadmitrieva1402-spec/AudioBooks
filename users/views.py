@@ -1,10 +1,15 @@
+import sqlite3
+
 from django.shortcuts import render
-from storage import load_users
+
+DB_PATH = "data/audiobooks.sqlite"
 
 
 def user_list(request):
-    users = load_users("data/users.json")
-    context = {
-        "users": users,
-    }
-    return render(request, "users/user_list.html", context)
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    users = conn.execute(
+        "SELECT * FROM users ORDER BY name"
+    ).fetchall()
+    conn.close()
+    return render(request, "users/user_list.html", {"users": users})

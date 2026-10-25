@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Статистика{% endblock %}
+
+{% block content %}
+<h1>Статистика коллекции</h1>
+<p class="lead">Всего книг в базе: <strong>{{ total.total }}</strong></p>
+
+<h2 class="mt-4">Книги по жанрам</h2>
+<ul class="list-group">
+    {% for item in stats %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ item.genre }}
+            <span class="badge bg-primary rounded-pill">{{ item.count_books }}</span>
+        </li>
+    {% empty %}
+        <li class="list-group-item">Нет данных для статистики.</li>
+    {% endfor %}
+</ul>
+
+<div class="mt-4">
+    <a href="{% url 'books:list' %}" class="btn btn-outline-secondary">← Назад к книгам</a>
+</div>
+{% endblock %}

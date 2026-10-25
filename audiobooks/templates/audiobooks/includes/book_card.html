@@ -2,7 +2,7 @@
     <article class="card book-card shadow-sm h-100">
         <div class="card-body">
             <h5 class="card-title">
-                {{ book.title|upper|default:"Без названия" }}
+                {{ book.title|default:"Без названия" }}
             </h5>
             <h6 class="card-subtitle mb-2 text-muted">{{ book.author }}</h6>
             <p class="card-text small">
